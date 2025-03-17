@@ -98,9 +98,12 @@ void IoTControl::sendSensor(const String& name, float value) {
   }
 }
 
+
 void IoTControl::setDimmer(const String& name, const String& dimmerID) {
   dimmers[name] = { dimmerID, 0 };
 }
+
+
 
 int IoTControl::getValueRelay(const String& name) {
   if (WiFi.status() == WL_CONNECTED && relays.count(name)) {
@@ -229,3 +232,36 @@ String IoTControl::getText(const String& name) {
   return texts[name].value;
 }
 
+void IoTControl::setGps(const String& name, const String& gpsID) {
+  gpsDevices[name] = { gpsID, 0.0, 0.0 };
+}
+
+void IoTControl::updateGps(const String& name, float latitude, float longitude) {
+  if (WiFi.status() == WL_CONNECTED && gpsDevices.count(name)) {
+    GPS& gps = gpsDevices[name];
+    gps.latitude = latitude;
+    gps.longitude = longitude;
+
+    HTTPClient http;
+    String url = serverGps + "?user_id=" + userID +
+                 "&gps_id=" + gps.gpsID +
+                 "&latitude=" + String(latitude, 6) +
+                 "&longitude=" + String(longitude, 6) +
+                 "&esp_id=" + espID +
+                 "&device_mac=" + getMacAddress();
+
+    http.begin(url);
+    int httpCode = http.GET();
+
+    if (httpCode > 0) {
+      String response = http.getString();
+      Serial.println("GPS Response: " + response);
+    } else {
+      Serial.println("Gagal mengirim data GPS, kode: " + String(httpCode));
+    }
+
+    http.end();
+  } else {
+    Serial.println("⚠️ WiFi tidak terhubung atau GPS tidak ditemukan!");
+  }
+}

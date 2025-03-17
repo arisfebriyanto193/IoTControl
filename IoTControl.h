@@ -16,12 +16,11 @@
 
 class IoTControl {
   private:
-  //const String serverRelay = "http://192.168.0.107:88/api/api2/relay.php";
     const String serverRelay = "https://iot.microesp.my.id/api/api2/relay.php";
-    //const String serverSensor = "http://192.168.0.107:88/api/api2/sensor.php";
     const String serverSensor = "https://iot.microesp.my.id/api/api2/sensor.php";
-    const String serverDimmer = "https://iot2.microesp.my.id/api/api2/dimmer.php";
-    const String serverText = "https://iot.microesp.my.id/api_txt.php";
+    const String serverDimmer = "https://iot.microesp.my.id/api/api2/dimmer.php";
+    const String serverText = "https://iot.microesp.my.id/api/api2/text.php";
+    const String serverGps = "https://iot.microesp.my.id/api/api2/gps2.php";
 
 
     String ssid;
@@ -46,18 +45,25 @@ class IoTControl {
       String textID;
       String value;
   };
-  
-  std::map<String, TextData> texts;  // Menyimpan teks berdasarkan nama
-  
 
-    std::map<String, Relay> relays;   // Menyimpan relay berdasarkan nama
-    std::map<String, Dimmer> dimmers; // Menyimpan dimmer berdasarkan nama
-    std::map<String, Sensor> sensors; // Menyimpan sensor berdasarkan nama
+  struct GPS {
+    String gpsID;
+    float latitude;
+    float longitude;
+};
+  
+std::map<String, GPS> gpsDevices;  
 
+std::map<String, Relay> relays;
+std::map<String, Sensor> sensors;
+std::map<String, Dimmer> dimmers;
+std::map<String, TextData> texts;
   public:
   public:
     IoTControl(const String& ssid, const String& password, const String& userID, const String& espID);
 
+    void setGps(const String& name, const String& gpsID);
+    void updateGps(const String& name, float latitude, float longitude);
 
 
     void connectWiFi();

@@ -8,20 +8,22 @@ String esp_id = "ESP_67c13ba743425"; //ESP_67bd9e483201b
 
 // Buat objek IoTControl
 IoTControl iot(ssid, password, user_id, esp_id);
-
 void setup() {
   Serial.begin(115200);
   iot.connectWiFi();
 
-  // Menambahkan relay
-  iot.setRelay("relay1", "b98ec897", 2);
-
+  // Masukkan GPS dengan ID
+  iot.setGps("Tracker1", "GPS_f98174ddfb");
 }
+
 
 void loop() {
-  // Update status relay dari server
-  iot.updateRelay("relay1");
+  float latitude = 2.080000;
+  float longitude = 102.400000;
 
+  // Update lokasi GPS
+  iot.updateGps("Tracker1", latitude, longitude);
 
-  delay(1000); 
+  delay(5000); // Kirim data setiap 5 detik
 }
+
