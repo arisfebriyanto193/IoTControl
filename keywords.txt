@@ -1,0 +1,14 @@
+# Definisi Class
+IoTControl  KEYWORD1
+
+# Fungsi Utama
+connectWiFi  KEYWORD2
+setRelay  KEYWORD2
+setSensor  KEYWORD2
+updateRelay  KEYWORD2
+sendSensor  KEYWORD2
+setText   KEYWORD2
+getText KEYWORD2
+setDimmer KEYWORD2
+getValueRelay KEYWORD2
+updateDimmer KEYWORD2
