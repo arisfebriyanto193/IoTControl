@@ -19,7 +19,37 @@ IoTControl::IoTControl(const String& ssid, const String& password, const String&
       #endif
     }
     
-
+    void IoTControl::setRelayStatus(const String& relayID, const String& status) {
+      if (WiFi.status() == WL_CONNECTED) {
+        HTTPClient http;
+        String url = serverSetRelay + "?user_id=" + userID +
+                     "&relay_ids=" + relayID +
+                     "&esp_id=" + espID +
+                     "&device_mac=" + getMacAddress() +
+                     "&setRelay=" + status;
+    
+        #ifdef ESP8266
+          WiFiClientSecure client;
+          client.setInsecure();  // Abaikan sertifikat SSL
+          http.begin(client, url);
+        #else
+          http.begin(url);
+        #endif
+    Serial.println(url);
+        int httpCode = http.GET();
+        if (httpCode > 0) {
+          String response = http.getString();
+          Serial.println("✅ Set Relay Response: " + response);
+        } else {
+          Serial.println("❌ Gagal set relay, kode: " + String(httpCode));
+        }
+    
+        http.end();
+      } else {
+        Serial.println("⚠️ WiFi tidak terhubung!");
+      }
+    }
+    
 
     void IoTControl::setEmail(const String& name, const String& emailID) {
       emails[name] = { emailID };

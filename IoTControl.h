@@ -24,6 +24,7 @@ class IoTControl {
     const String serverDimmer = "https://iot.microesp.my.id/api/api2/dimmer.php";
     const String serverText   = "https://iot.microesp.my.id/api/api2/text.php";
     const String serverGps    = "https://iot.microesp.my.id/api/api2/gps2.php";
+    const String serverSetRelay    = "https://iot.microesp.my.id/api/api1/setRelay.php";
 
     String ssid;
     String password;
@@ -34,6 +35,8 @@ class IoTControl {
       String relayID;
       int relayPin;
     };
+    
+ 
 
     struct Dimmer {
       String dimmerID;
@@ -82,6 +85,7 @@ std::map<String, Email> emails;
     void sendEmail(const String& name);
     void resetEmail(const String& name);
     
+    void setRelayStatus(const String& relayID, const String& status);
 
 
     void connectWiFi();
